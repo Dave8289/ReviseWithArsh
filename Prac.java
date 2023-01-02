@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -54,6 +55,55 @@ class Prac {
             helper(ans, miniAns, j + 1, k, n - j);
             miniAns.remove(miniAns.size() - 1);
         }
+    }
+
+    // 299. Bulls and Cows by HashMap
+
+    public String getHint(String secret, String guess) {
+        String bulls = "";
+        int cows = 0;
+        HashMap<Character, Integer> map1 = new HashMap<>();
+        HashMap<Character, Integer> map2 = new HashMap<>();
+
+        for (int i = 0; i < secret.length(); i++) {
+            if (secret.charAt(i) == guess.charAt(i)) {
+                bulls += secret.charAt(i);
+            } else {
+                if (map1.containsKey(secret.charAt(i))) {
+                    map1.put(secret.charAt(i), map1.get(secret.charAt(i)) + 1);
+                } else {
+                    map1.put(secret.charAt(i), 1);
+                }
+                if (map2.containsKey(guess.charAt(i))) {
+                    map2.put(guess.charAt(i), map2.get(guess.charAt(i)) + 1);
+                } else {
+                    map2.put(guess.charAt(i), 1);
+                }
+            }
+        }
+        for (int i = 0; i < secret.length(); i++) {
+            if (secret.charAt(i) == guess.charAt(i)) {
+                continue;
+            } else if (map2.containsKey(secret.charAt(i))) {
+                cows++;
+                if (map1.get(secret.charAt(i)) > 1) {
+                    map1.put(secret.charAt(i), map1.get(secret.charAt(i)) - 1);
+                } else {
+                    map1.remove(secret.charAt(i));
+                }
+                if (map2.get(secret.charAt(i)) > 1) {
+                    map2.put(secret.charAt(i), map2.get(secret.charAt(i)) - 1);
+                } else {
+                    map2.remove(secret.charAt(i));
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(bulls.length());
+        sb.append("A");
+        sb.append(String.valueOf(cows));
+        sb.append("B");
+        return sb.toString();
     }
 
     public static void main(String[] args) {
