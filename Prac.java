@@ -40,9 +40,13 @@ class Prac {
     }
 
     private static void helper(List<List<Integer>> ans, List<Integer> miniAns, int start, int k, int n) {
-        if (miniAns.size() == k && n == 0) {
-            List<Integer> list = new ArrayList<>(miniAns);
-            ans.add(list);
+        if (n < 0)
+            return;
+        if (miniAns.size() == k) {
+            if (n == 0) {
+                List<Integer> list = new ArrayList<>(miniAns);
+                ans.add(list);
+            }
             return;
         }
         for (int j = start; j <= 9; j++) {
