@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 class Prac {
@@ -150,6 +151,52 @@ class Prac {
             max = Math.max(max, iteration);
         }
         return max;
+    }
+
+    // 391. Perfect Rectangle
+
+    public boolean isRectangleCover(int[][] rectangles) {
+        int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
+        int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
+        int currSum = 0;
+        Set<String> set = new HashSet<>();
+
+        for (int[] point : rectangles) {
+            int x1 = point[0], y1 = point[1], x2 = point[2], y2 = point[3];
+            X1 = Math.min(X1, x1);
+            Y1 = Math.min(Y1, y1);
+            X2 = Math.max(X2, x2);
+            Y2 = Math.max(Y2, y2);
+            currSum += (x2 - x1) * (y2 - y1);
+            String p1 = x1 + "," + y1;
+            String p2 = x2 + "," + y2;
+            String p3 = x1 + "," + y2;
+            String p4 = x2 + "," + y1;
+
+            String[] points = { p1, p2, p3, p4 };
+            for (String p : points) {
+                if (set.contains(p)) {
+                    set.remove(p);
+                } else {
+                    set.add(p);
+                }
+            }
+        }
+        int sum = (X2 - X1) * (Y2 - Y1);
+        if (currSum != sum)
+            return false;
+        if (set.size() != 4)
+            return false;
+        if (!set.contains(X1 + "," + Y1)) {
+            return false;
+        } else if (!set.contains(X2 + "," + Y2)) {
+            return false;
+        } else if (!set.contains(X1 + "," + Y2)) {
+            return false;
+        } else if (!set.contains(X2 + "," + Y1)) {
+            return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) {
