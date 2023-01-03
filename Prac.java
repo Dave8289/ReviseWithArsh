@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
@@ -106,9 +107,52 @@ class Prac {
         return sb.toString();
     }
 
+    // 368. Largest Divisible Subsets
+
+    List<Integer> res;
+    int mem[];
+
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        Arrays.sort(nums);
+        mem = new int[nums.length];
+        Arrays.fill(mem, -1);
+        res = new ArrayList<>();
+        helper(nums, 0, new ArrayList<>(), 1);
+        return res;
+    }
+
+    public void helper(int nums[], int start, List<Integer> curr, int prev) {
+        if (curr.size() > res.size()) {
+            res = new ArrayList<>(curr);
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            if (curr.size() > mem[i] && nums[i] % prev == 0) {
+                mem[i] = curr.size();
+                curr.add(nums[i]);
+                helper(nums, i + 1, curr, nums[i]);
+                curr.remove(curr.size() - 1);
+            }
+        }
+    }
+
+    // 396. Rotate Function
+
+    public int maxRotateFunction(int[] nums) {
+        int sum = 0, iteration = 0, max = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            iteration += (i * nums[i]);
+        }
+        max = iteration;
+        for (int i = nums.length - 1; i > 0; i--) {
+            iteration += (sum - nums.length * (nums[i]));
+            max = Math.max(max, iteration);
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
-        int k = 3;
-        int n = 9;
-        System.out.println(combinationSum3(k, n));
+
     }
 }
